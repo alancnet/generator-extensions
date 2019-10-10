@@ -1,5 +1,11 @@
 {
   "name": "generator-extensions",
+  "author": {
+    "name": "Alan Colon"
+  },
+  "repository": {
+    "url": "https://github.com/alancnet/generator-extensions"
+  },
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
