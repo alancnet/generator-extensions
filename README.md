@@ -143,7 +143,18 @@ false
 </p>
 
 ### forEach
-The forEach() method executes a provided function once for each array element.
+The forEach() method executes a provided function once for each generator element.
+
+### parallel (async only)
+The parallel() method executes a provided async function in parallel with other elements, up to a limit provided by the second parameter (default: Infinity). The resulting generator may be in a different order than the source generator. 
+
+➊─➋─➌─➍─➎─➏─➐─➑─➒
+.parallel(async x => x, 3)
+➊───➍───➐
+───➋───➎───➑
+──────➌───➏───➒
+...
+➊─➋─➍─➌─➎─➐─➏─➑─➒
 
 
 <!-- 🄌 ➊ ➋ ➌ ➍ ➎ ➏ ➐ ➑ ➒ ➓ ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴ -->
