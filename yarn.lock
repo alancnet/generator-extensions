@@ -182,6 +182,11 @@ esprima@^4.0.0:
   resolved "https://verdaccio.cybercoders.net/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
+fifo@^2.3.0:
+  version "2.3.0"
+  resolved "https://verdaccio.cybercoders.net/fifo/-/fifo-2.3.0.tgz#182de8dd0632aa47cf6816d9bc4323317d5259dc"
+  integrity sha1-GC3o3QYyqkfPaBbZvEMjMX1SWdw=
+
 find-up@3.0.0, find-up@^3.0.0:
   version "3.0.0"
   resolved "https://verdaccio.cybercoders.net/find-up/-/find-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
@@ -205,6 +210,13 @@ function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://verdaccio.cybercoders.net/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
+
+gefer@^1.0.1:
+  version "1.0.1"
+  resolved "https://verdaccio.cybercoders.net/gefer/-/gefer-1.0.1.tgz#fd5126dfa817758622328da7ae2c31bea99b488c"
+  integrity sha512-dNdhVypvlWmO5ilDy0H+gT7PWI+lQYxgDGAHUyavzGOT/JjL9N4AELHM4CyIo2bYpqC8hsLNfhpF3YU6EAoL6g==
+  dependencies:
+    fifo "^2.3.0"
 
 get-caller-file@^2.0.1:
   version "2.0.5"

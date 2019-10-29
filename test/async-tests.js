@@ -1,10 +1,11 @@
-require('..')
+const { AsyncGenerator } = require('..')
 const { expect } = require('chai')
 
 async function* test() {
   yield 1
   yield 2
   yield 3
+  return 4
 }
 
 describe('async generator', () => {
@@ -62,5 +63,57 @@ describe('async generator', () => {
   it('should .drop()', async () => {
     expect(await test().drop(1).toArray())
     .to.deep.equal([2,3])
+  })
+  it('should await', async () => {
+    const ret = await test()
+    expect(ret).to.equal(4)
+  })
+  it('should parallel', async () => {
+    let i = 0
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+    let order = ''
+    let result = ''
+    let fns = [
+      async () => {
+        await sleep(100)
+        order += '1'
+        return '1'
+      },
+      async () => {
+        await sleep(80)
+        order += '2'
+        return '2'
+      },
+      async () => {
+        await sleep(60)
+        order += '3'
+        return '3'
+      },
+      async () => {
+        await sleep(40)
+        order += '4'
+        return '4'
+      },
+      async () => {
+        await sleep(20)
+        order += '5'
+        return '5'
+      },
+      async () => {
+        await sleep(0)
+        order += '6'
+        return '6'
+      }
+    ]
+
+    order = ''
+    result = (await AsyncGenerator.from(fns).parallel(x => x()).toArray()).join('')
+    expect(order).to.equal('654321')
+    expect(order).to.equal('654321')
+    order = ''
+    result = (await AsyncGenerator.from(fns).parallel(x => x(), 1).toArray()).join('')
+    expect(order).to.equal('123456')
+    expect(order).to.equal('123456')
   })
 })

@@ -1,15 +1,12 @@
 function* dummy() {}
 const Generator = dummy().constructor
 
-Generator.prototype.from = async function*() {
-  if (iterable[Symbol.asyncIterator]) {
-    yield* iterable
-  } else {
-    for (let item of iterable) {
-        yield item
-    }
+Generator.from = function*(iterable) {
+  for (let item of iterable) {
+      yield item
   }
 }
+
 Generator.prototype.toArray = function() {
   const array = []
   for (let item of this) {

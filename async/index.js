@@ -1,7 +1,8 @@
+const gefer = require('gefer')
 async function* dummy() {}
 const AsyncGenerator = dummy().constructor
 
-AsyncGenerator.prototype.from = async function*() {
+AsyncGenerator.from = async function*(iterable) {
   if (iterable[Symbol.asyncIterator]) {
     yield* iterable
   } else {
@@ -10,6 +11,7 @@ AsyncGenerator.prototype.from = async function*() {
     }
   }
 }
+
 AsyncGenerator.prototype.toArray = async function() {
   const array = []
   for await (let item of this) {
@@ -117,6 +119,106 @@ AsyncGenerator.prototype.drop = async function*(n) {
   for await (let item of this) {
     if (i++ >= n) yield item
   }
+}
+
+// Async only
+AsyncGenerator.prototype.then = async function(resolve, reject) {
+  let ret
+  try {
+    while (true) {
+      const next = await this.next()
+      if (next.done) {
+        ret = next.value
+        break
+      }
+    }
+  } catch (err) {
+    if (reject) return reject(err)
+  }
+  return resolve && resolve(ret)
+}
+AsyncGenerator.prototype.then = async function(resolve, reject) {
+  let ret
+  try {
+    while (true) {
+      const next = await this.next()
+      if (next.done) {
+        ret = next.value
+        break
+      }
+    }
+  } catch (err) {
+    if (reject) return reject(err)
+  }
+  return resolve && resolve(ret)
+}
+
+AsyncGenerator.prototype.parallel = function(fn, threads = Infinity) {
+  const subject = gefer.subject()
+  let concurrent = 0
+  let errored = false
+  let done = false
+  let completed = false
+  const check = () => {
+    // Checking...
+    if (!errored) {
+      //   Not errored
+      if (concurrent < threads && !done) {
+        //   Ready for more! ${concurrent} < ${threads} && !${done}
+        concurrent++
+        this.next().then(next => {
+          //   Next:
+          if (next.done) {
+            //   Next says done.
+            done = true
+            concurrent--
+            check()
+          } else {
+            //   Next says emit.
+            let result
+            try {
+              result = fn(next.value)
+              //   Result:
+              if (result && result.then) {
+                //   Result is a promise
+                result.then(
+                  (val) => {
+                    //   Result resolved
+                    subject.next(val)
+                    concurrent--
+                    check()
+                  },
+                  (err) => {
+                    //   Result rejected
+                    errored = true
+                    subject.error(err)
+                  }
+                )
+                check()
+              } else {
+                //   Result is not a promise
+                subject.next(result)
+                concurrent--
+                check()
+              }
+            } catch (err) {
+              //   Fn errored
+              errored = true
+              subject.error(err)
+            }
+          }
+        })
+      } else if (concurrent === 0 && !completed) {
+        // ... And we're done!
+        completed = true
+        subject.return()
+      } else {
+        // Not ready for more :(
+      }
+    }
+  }
+  check()
+  return subject()
 }
 module.exports = {
     AsyncGenerator
