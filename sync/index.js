@@ -1,6 +1,15 @@
 function* dummy() {}
 const Generator = dummy().constructor
 
+Generator.prototype.from = async function*() {
+  if (iterable[Symbol.asyncIterator]) {
+    yield* iterable
+  } else {
+    for (let item of iterable) {
+        yield item
+    }
+  }
+}
 Generator.prototype.toArray = function() {
   const array = []
   for (let item of this) {
@@ -95,6 +104,21 @@ Generator.prototype.forEach = function(fn) {
     fn(item, i++, this)
   }
 }
+Generator.prototype.take = function*(n) {
+  if (n <= 0) return
+  let i = 0
+  for (let item of this) {
+    if (i++ >= n) return
+    yield item
+  }
+}
+Generator.prototype.drop = function*(n) {
+  let i = 0;
+  for (let item of this) {
+    if (i++ >= n) yield item
+  }
+}
+
 module.exports = {
     Generator
 }

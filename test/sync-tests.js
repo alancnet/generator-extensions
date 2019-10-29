@@ -55,4 +55,12 @@ describe('generator', () => {
     test().forEach(x => i += x)
     expect(i).to.equal(6)
   })
+  it('should .take()', async () => {
+    expect(test().take(2).toArray())
+    .to.deep.equal([1,2])
+  })
+  it('should .drop()', async () => {
+    expect(test().drop(1).toArray())
+    .to.deep.equal([2,3])
+  })
 })

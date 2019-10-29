@@ -1,6 +1,15 @@
 async function* dummy() {}
 const AsyncGenerator = dummy().constructor
 
+AsyncGenerator.prototype.from = async function*() {
+  if (iterable[Symbol.asyncIterator]) {
+    yield* iterable
+  } else {
+    for (let item of iterable) {
+        yield item
+    }
+  }
+}
 AsyncGenerator.prototype.toArray = async function() {
   const array = []
   for await (let item of this) {
@@ -93,6 +102,20 @@ AsyncGenerator.prototype.forEach = async function(fn) {
   let i = 0;
   for await (let item of this) {
     await fn(item, i++, this)
+  }
+}
+AsyncGenerator.prototype.take = async function*(n) {
+  if (n <= 0) return
+  let i = 0
+  for await (let item of this) {
+    if (i++ >= n) return
+    yield item
+  }
+}
+AsyncGenerator.prototype.drop = async function*(n) {
+  let i = 0;
+  for await (let item of this) {
+    if (i++ >= n) yield item
   }
 }
 module.exports = {

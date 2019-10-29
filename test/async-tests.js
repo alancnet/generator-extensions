@@ -55,4 +55,12 @@ describe('async generator', () => {
     await test().forEach(x => i += x)
     expect(i).to.equal(6)
   })
+  it('should .take()', async () => {
+    expect(await test().take(2).toArray())
+    .to.deep.equal([1,2])
+  })
+  it('should .drop()', async () => {
+    expect(await test().drop(1).toArray())
+    .to.deep.equal([2,3])
+  })
 })
