@@ -148,13 +148,14 @@ The forEach() method executes a provided function once for each generator elemen
 ### parallel (async only)
 The parallel() method executes a provided async function in parallel with other elements, up to a limit provided by the second parameter (default: Infinity). The resulting generator may be in a different order than the source generator. 
 
-➊─➋─➌─➍─➎─➏─➐─➑─➒
-.parallel(async x => x, 3)
-➊───➍───➐
-───➋───➎───➑
-──────➌───➏───➒
-...
-➊─➋─➍─➌─➎─➐─➏─➑─➒
-
+<p style="font-size: 18pt">
+➊─➋─➌─➍─➎─➏─➐─➑─➒<br />
+.parallel(async x => x, 3)<br />
+➊───➍───➐<br />
+───➋───➎───➑<br />
+──────➌───➏───➒<br />
+...<br />
+➊─➋─➍─➌─➎─➐─➏─➑─➒<br />
+</p>
 
 <!-- 🄌 ➊ ➋ ➌ ➍ ➎ ➏ ➐ ➑ ➒ ➓ ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴ -->
