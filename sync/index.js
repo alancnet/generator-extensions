@@ -7,6 +7,8 @@ Generator.from = function*(iterable) {
   }
 }
 
+Generator.of = (...args) => Generator.from(args)
+
 Generator.prototype.toArray = function() {
   const array = []
   for (let item of this) {
@@ -26,6 +28,12 @@ Generator.prototype.flatMap = function*(mapper) {
       }
     }
   }
+}
+Generator.prototype.flat = function*(depth = 1) {
+  if (depth < 0) throw new Error('Depth must be greater than 0.')
+  if (depth === 0) return yield* this
+  if (depth === 1) return yield* this.flatMap(x => x)
+  yield* this.flatMap(item => item).flat(depth - 1)
 }
 Generator.prototype.map = function*(mapper) {
   let i = 0;

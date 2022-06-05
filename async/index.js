@@ -12,6 +12,8 @@ AsyncGenerator.from = async function*(iterable) {
   }
 }
 
+AsyncGenerator.of = (...args) => AsyncGenerator.from(args)
+
 AsyncGenerator.prototype.toArray = async function() {
   const array = []
   for await (let item of this) {
@@ -31,6 +33,12 @@ AsyncGenerator.prototype.flatMap = async function*(mapper) {
       }
     }
   }
+}
+AsyncGenerator.prototype.flat = async function*(depth = 1) {
+  if (depth < 0) throw new Error('Depth must be greater than 0.')
+  if (depth === 0) return yield* this
+  if (depth === 1) return yield* this.flatMap(x => x)
+  yield* this.flatMap(item => item).flat(depth - 1)
 }
 AsyncGenerator.prototype.map = async function*(mapper) {
   let i = 0;

@@ -1,4 +1,4 @@
-require('..')
+const { Generator } = require('..')
 const { expect } = require('chai')
 
 function* test() {
@@ -17,6 +17,12 @@ describe('generator', () => {
     expect(a).to.deep.equal([1,1,2,2,3,3])
     const b = test().flatMap(x => null).toArray()
     expect(b).to.deep.equal([])
+  })
+  it('should .flat()', () => {
+    const a = Generator.from([[1,2,3], [4,5,6]]).flat().toArray()
+    expect(a).to.deep.equal([1,2,3,4,5,6])
+    const b = Generator.from([[[1,2],[3,4]], [[5,6],[7,8]]]).flat(2).toArray()
+    expect(b).to.deep.equal([1,2,3,4,5,6,7,8])
   })
   it('should .map()', () => {
     expect(test().map(x => x * 2).toArray())

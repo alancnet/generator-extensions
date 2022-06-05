@@ -19,6 +19,12 @@ describe('async generator', () => {
     const b = await test().flatMap(x => null).toArray()
     expect(b).to.deep.equal([])
   })
+  it('should .flat()', async () => {
+    const a = await AsyncGenerator.from([[1,2,3], [4,5,6]]).flat().toArray()
+    expect(a).to.deep.equal([1,2,3,4,5,6])
+    const b = await AsyncGenerator.from([[[1,2],[3,4]], [[5,6],[7,8]]]).flat(2).toArray()
+    expect(b).to.deep.equal([1,2,3,4,5,6,7,8])
+  })
   it('should .map()', async () => {
     expect(await test().map(x => x * 2).toArray())
     .to.deep.equal([2,4,6])

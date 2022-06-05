@@ -66,6 +66,15 @@ The flatMap() method first maps each element using a mapping function, then flat
 ➊─⓫─➋─⓬─➌─⓭
 </p>
 
+### flat
+The flat([depth = 1]) flattens each element to a specified depth into a new generator.
+
+<p style="font-size: 18pt">
+[➊, ➋, ➌]────[➊, ➋, ➌]<br />
+.flat()<br />
+➊─➋─➌─➊─➋─➌
+</p>
+
 ### map
 The map() method creates a new generator with the results of calling a provided function on every element in the calling generator.
 
