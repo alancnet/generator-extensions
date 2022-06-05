@@ -151,6 +151,22 @@ The every() method tests whether all elements in the generator pass the test imp
 false
 </p>
 
+### tap
+Execute a function for each element without changing the value emitted.
+<p style="font-size: 18pt">
+➊────➋────➌<br />
+.tap(x => console.log(x))<br />
+➊────➋────➌
+</p>
+
+### count
+<p style="font-size: 18pt">
+Counts the number of elements and returns it as a number.
+➊────➋────➌<br />
+.count()<br />
+3
+</p>
+
 ### forEach
 The forEach() method executes a provided function once for each generator element.
 

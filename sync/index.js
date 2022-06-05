@@ -9,6 +9,30 @@ Generator.from = function*(iterable) {
 
 Generator.of = (...args) => Generator.from(args)
 
+Generator.prototype.replay = () => {
+  const self = this
+  console.log('self', self)
+  let iterator = null
+  const memory = []
+  let mainCursor = 0
+  Object.assign(Object.create(this), {
+    [Symbol.iterator]: () => {
+      console.log('this', this)
+      console.log(this.constructor)
+      if (!iterator) iterator = self[Symbol.iterator]()
+      let myCursor = 0
+      return {
+        next: () => {
+          if (myCursor === mainCursor) {
+            memory[mainCursor++] = iterator.next()
+          }
+          return memory[myCursor++]
+        }
+      }
+    }
+  })
+}
+
 Generator.prototype.toArray = function() {
   const array = []
   for (let item of this) {
@@ -122,6 +146,22 @@ Generator.prototype.drop = function*(n) {
   for (let item of this) {
     if (i++ >= n) yield item
   }
+}
+Generator.prototype.tap = function*(fn) {
+  for (let item of this) {
+    fn(item)
+    yield item
+  }
+}
+Generator.prototype.count = function() {
+  let i = 0
+  for (let item of this) {
+    i++
+  }
+  return i
+}
+Generator.prototype.go = function() {
+  this.count()
 }
 
 module.exports = {

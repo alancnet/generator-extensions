@@ -70,6 +70,21 @@ describe('async generator', () => {
     expect(await test().drop(1).toArray())
     .to.deep.equal([2,3])
   })
+  it('should .tap()', async () => {
+    let a = []
+    await test().tap(async x => a.push(x)).go()
+    expect(a).to.deep.equal([1,2,3])
+  })
+  it('should .count()', async () => {
+    expect(await test().count()).to.equal(3)
+  })
+  it('should .go()', async () => {
+    let a = []
+    await test().tap(async x => a.push(x)).go()
+    expect(a).to.deep.equal([1,2,3])
+  })
+
+
   it('should parallel', async () => {
     let i = 0
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))

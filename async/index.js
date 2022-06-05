@@ -24,7 +24,7 @@ AsyncGenerator.prototype.toArray = async function() {
 AsyncGenerator.prototype.flatMap = async function*(mapper) {
   let i = 0
   for await (let item of this) {
-    const mapped = mapper(item, i++, this)  
+    const mapped = await mapper(item, i++, this)  
     if (mapped) {
       if (mapped[Symbol.iterator] || mapped[Symbol.asyncIterator]) {
         yield* mapped
@@ -127,6 +127,22 @@ AsyncGenerator.prototype.drop = async function*(n) {
   for await (let item of this) {
     if (i++ >= n) yield item
   }
+}
+AsyncGenerator.prototype.tap = async function*(fn) {
+  for await (let item of this) {
+    await fn(item)
+    yield item
+  }
+}
+AsyncGenerator.prototype.count = async function() {
+  let i = 0
+  for await (let item of this) {
+    i++
+  }
+  return i
+}
+AsyncGenerator.prototype.go = async function() {
+  await this.count()
 }
 
 AsyncGenerator.prototype.parallel = function(fn, threads = Infinity) {
