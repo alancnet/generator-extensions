@@ -129,38 +129,6 @@ AsyncGenerator.prototype.drop = async function*(n) {
   }
 }
 
-// Async only
-AsyncGenerator.prototype.then = async function(resolve, reject) {
-  let ret
-  try {
-    while (true) {
-      const next = await this.next()
-      if (next.done) {
-        ret = next.value
-        break
-      }
-    }
-  } catch (err) {
-    if (reject) return reject(err)
-  }
-  return resolve && resolve(ret)
-}
-AsyncGenerator.prototype.then = async function(resolve, reject) {
-  let ret
-  try {
-    while (true) {
-      const next = await this.next()
-      if (next.done) {
-        ret = next.value
-        break
-      }
-    }
-  } catch (err) {
-    if (reject) return reject(err)
-  }
-  return resolve && resolve(ret)
-}
-
 AsyncGenerator.prototype.parallel = function(fn, threads = Infinity) {
   const subject = gefer.subject()
   let concurrent = 0

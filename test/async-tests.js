@@ -70,10 +70,6 @@ describe('async generator', () => {
     expect(await test().drop(1).toArray())
     .to.deep.equal([2,3])
   })
-  it('should await', async () => {
-    const ret = await test()
-    expect(ret).to.equal(4)
-  })
   it('should parallel', async () => {
     let i = 0
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
